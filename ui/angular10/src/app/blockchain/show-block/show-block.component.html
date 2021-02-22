@@ -1,0 +1,120 @@
+
+
+  <tr *ngFor="let dataItem of PeerList;let i = index">
+ 
+    <div *ngIf="dataItem.Color=='red'">
+    <button (click)="clickPeer(dataItem.PeerName,i)"
+    class="m-1 btn btn-light btn-outline-primary"  style=" background-color: red;" >{{dataItem.PeerName}}</button>
+  </div>
+  <div *ngIf="dataItem.Color!='red'">
+  <button (click)="clickPeer(dataItem.PeerName,i)"
+  class="m-1 btn btn-light btn-outline-primary"  style=" background-color:  grey;" >{{dataItem.PeerName}}</button>
+</div>
+
+  </tr>
+  <div>
+  <td >
+    <input type="text"  margin-5px
+    placeholder="Add Peer" [(ngModel)]="Peer">
+    <button type="button" class=" btn btn-primary float-right  margin-5px"  
+
+(click)="addPeer()"
+>
+Add Peer
+</button>
+  </td>
+</div>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>BlockId</th>
+            <th>Data</th>
+            
+           
+        </tr>
+    </thead>
+    <tbody>
+     
+        <tr *ngFor="let dataItem of PeerDataList;let i = index">
+          <td>#BLOCK {{i+1 }}</td>
+
+          <div *ngIf="i == 0">
+        
+            <td>{{PeerDataList[i].Data }}</td>
+          </div> 
+       
+          <div *ngIf="i > 0">
+
+            <div *ngIf="i > 0">
+              <div *ngIf="PeerDataList[i-1].UpdatedTxHash== PeerDataList[i-1].TxHash">
+                <td style="color:green;" > Previous TxHash: {{PeerDataList[i-1].UpdatedTxHash }}</td>
+              </div>
+              <div *ngIf= "PeerDataList[i-1].UpdatedTxHash != PeerDataList[i-1].TxHash">
+                <td style="color:red;" > Previous TxHash: {{PeerDataList[i-1].UpdatedTxHash }}</td>
+              </div>
+
+          </div>
+        
+            <td>
+              <input type="text"  [(ngModel)]="PeerDataList[i].Data"
+        placeholder="{{PeerDataList[i].Data }}" (input)="addsInput(i)">
+      </td>
+          </div> 
+          
+         
+          
+            <div >
+         
+            </div>
+          
+            <div *ngIf="dataItem.UpdatedTxHash == dataItem.TxHash">
+              <td style="color:green;" >Block TxHash: {{dataItem.UpdatedTxHash}}</td>
+            </div>
+            <div *ngIf="dataItem.UpdatedTxHash != dataItem.TxHash">
+              <td style="color:red;" > Block TxHash: {{dataItem.UpdatedTxHash}}</td>
+            </div>
+          
+            <td>{{dataItem.DateOfJoining}}</td>
+            <td>
+                <button type="button" class="btn btn-light mr-1"
+              
+(click)="editClick(i)"
+data-backdrop="static" data-keyboard="false"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench" viewBox="0 0 16 16">
+                  <path d="M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.252A3.003 3.003 0 0 0 13 16a3 3 0 1 0-.851-5.878L5.897 3.781A3.004 3.004 0 0 0 2.223.1l2.141 2.142L4 4l-1.757.364L.102 2.223zm13.37 9.019l.528.026.287.445.445.287.026.529L15 13l-.242.471-.026.529-.445.287-.287.445-.529.026L13 15l-.471-.242-.529-.026-.287-.445-.445-.287-.026-.529L11 13l.242-.471.026-.529.445-.287.287-.445.529-.026L13 11l.471.242z"/>
+                </svg>
+                </button>
+            </td>
+        </tr>
+
+        <tr >
+          <td>New Block</td>
+          <td>
+            <input type="text" 
+            placeholder="Add data" [(ngModel)]="Data">
+            <div *ngIf="Data=='' ">
+            <button type="button" class="btn btn-primary float-right ml-3" 
+
+(click)="addClick() "  disabled
+>
+    Add Data
+  </button>
+</div>
+  <div *ngIf="Data !=''">
+    <button type="button" class="btn btn-primary float-right ml-3" 
+
+(click)="addClick()"
+>
+Add Data
+</button>
+</div>
+          </td>
+        
+
+    </tbody>
+</table>
+
+
