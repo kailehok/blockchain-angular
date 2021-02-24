@@ -1,120 +1,178 @@
-
-
-  <tr *ngFor="let dataItem of PeerList;let i = index">
- 
-    <div *ngIf="dataItem.Color=='red'">
-    <button (click)="clickPeer(dataItem.PeerName,i)"
-    class="m-1 btn btn-light btn-outline-primary"  style=" background-color: red;" >{{dataItem.PeerName}}</button>
-  </div>
-  <div *ngIf="dataItem.Color!='red'">
-  <button (click)="clickPeer(dataItem.PeerName,i)"
-  class="m-1 btn btn-light btn-outline-primary"  style=" background-color:  grey;" >{{dataItem.PeerName}}</button>
-</div>
-
-  </tr>
-  <div>
-  <td >
-    <input type="text"  margin-5px
-    placeholder="Add Peer" [(ngModel)]="Peer">
-    <button type="button" class=" btn btn-primary float-right  margin-5px"  
-
-(click)="addPeer()"
->
-Add Peer
-</button>
-  </td>
-</div>
-
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>BlockId</th>
-            <th>Data</th>
-            
-           
-        </tr>
-    </thead>
-    <tbody>
-     
-        <tr *ngFor="let dataItem of PeerDataList;let i = index">
-          <td>#BLOCK {{i+1 }}</td>
-
-          <div *ngIf="i == 0">
-        
-            <td>{{PeerDataList[i].Data }}</td>
-          </div> 
-       
-          <div *ngIf="i > 0">
-
-            <div *ngIf="i > 0">
-              <div *ngIf="PeerDataList[i-1].UpdatedTxHash== PeerDataList[i-1].TxHash">
-                <td style="color:green;" > Previous TxHash: {{PeerDataList[i-1].UpdatedTxHash }}</td>
-              </div>
-              <div *ngIf= "PeerDataList[i-1].UpdatedTxHash != PeerDataList[i-1].TxHash">
-                <td style="color:red;" > Previous TxHash: {{PeerDataList[i-1].UpdatedTxHash }}</td>
-              </div>
-
-          </div>
-        
-            <td>
-              <input type="text"  [(ngModel)]="PeerDataList[i].Data"
-        placeholder="{{PeerDataList[i].Data }}" (input)="addsInput(i)">
-      </td>
-          </div> 
-          
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+      <meta name="theme-color" content="#000000">
+      <link rel="manifest" href="/manifest.json">
+      <link rel="shortcut icon" href="/favicon.ico">
+    
+      <meta name="Description" content="A visual demo of the blockchain data structure">
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@sean_j_han">
+      <meta name="twitter:creator" content="@sean_j_han">
+      <meta property="og:url" content="https://blockchaindemo.io">
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="Blockchain Demo">
+      <meta property="og:description" content="A visual demo of the blockchain data structure">
+      <meta property="og:image" content="https://blockchaindemo.io/screenshot.png">
+      <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-66887983-4"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-66887983-4")</script><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-7962273302187726",enable_page_level_ads:!0})</script>
+      <link href="/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <noscript>You need to enable JavaScript to run this app.</noscript>
+      <div id="root">
          
-          
-            <div >
-         
+         <div>
+            <h1>Blockchain Demo - A visual demo of blockchain technology</h1>
+            <div>
+               <div class="joyride" style="display: block;"></div>
             </div>
-          
-            <div *ngIf="dataItem.UpdatedTxHash == dataItem.TxHash">
-              <td style="color:green;" >Block TxHash: {{dataItem.UpdatedTxHash}}</td>
-            </div>
-            <div *ngIf="dataItem.UpdatedTxHash != dataItem.TxHash">
-              <td style="color:red;" > Block TxHash: {{dataItem.UpdatedTxHash}}</td>
-            </div>
-          
-            <td>{{dataItem.DateOfJoining}}</td>
-            <td>
-                <button type="button" class="btn btn-light mr-1"
+            <div class="ant-layout-content" style="padding: 3.5vw 5vw;">
               
-(click)="editClick(i)"
-data-backdrop="static" data-keyboard="false"
-                >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench" viewBox="0 0 16 16">
-                  <path d="M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.252A3.003 3.003 0 0 0 13 16a3 3 0 1 0-.851-5.878L5.897 3.781A3.004 3.004 0 0 0 2.223.1l2.141 2.142L4 4l-1.757.364L.102 2.223zm13.37 9.019l.528.026.287.445.445.287.026.529L15 13l-.242.471-.026.529-.445.287-.287.445-.529.026L13 15l-.471-.242-.529-.026-.287-.445-.445-.287-.026-.529L11 13l.242-.471.026-.529.445-.287.287-.445.529-.026L13 11l.471.242z"/>
-                </svg>
-                </button>
-            </td>
-        </tr>
+             
+               <h1 class="p2p" style="font-size: 24pt; font-weight: 700; margin-left: 10px; margin-bottom: 15px; letter-spacing: 1px; position: relive; z-index: 999;">PEERS</h1>
+               <th *ngFor="let dataItem of PeerList;let i = index">
+                  <button type="button" class="ant-btn ant-btn-primary ant-tag-red " style="float: right;font-size: 15pt; font-weight: 500;"(click)="clickPeer(dataItem.PeerName,i)">{{dataItem.PeerName}}</button>
+                 
+     
+              
+               </th>
+               <div class="ant-tabs ant-tabs-top ant-tabs-card ant-tabs-editable-card">
+                  <div role="tablist" class="ant-tabs-bar" tabindex="0">
+                   
+                   
 
-        <tr >
-          <td>New Block</td>
-          <td>
-            <input type="text" 
-            placeholder="Add data" [(ngModel)]="Data">
-            <div *ngIf="Data=='' ">
-            <button type="button" class="btn btn-primary float-right ml-3" 
+                     
+                        
+                        <div class="ant-tabs-extra-content" style="float: right;">
+                           
+                           <input type="text"style="float: right;font-size: 15pt; font-weight: 500;"class="ant-input"  [(ngModel)]="Peer" >
+                           <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addPeer()"><span>Add Peer</span></button>
+                     </div>
+                     <div class="ant-tabs-nav-container">
+                        <span unselectable="unselectable" class="ant-tabs-tab-prev ant-tabs-tab-btn-disabled"><span class="ant-tabs-tab-prev-icon"></span></span><span unselectable="unselectable" class="ant-tabs-tab-next ant-tabs-tab-btn-disabled"><span class="ant-tabs-tab-next-icon"></span></span>
+                        <div class="ant-tabs-nav-wrap">
+                           <div class="ant-tabs-nav-scroll">
+                           
+                                 
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="ant-tabs-content ant-tabs-content-animated" style="margin-left: 0%;">
+                     <div role="tabpanel" aria-hidden="false" class="ant-tabs-tabpane ant-tabs-tabpane-active more-shit">
+                        <div>
+                           <div style="width: 100%;">
+                              <div class="valid-chain replace-chain">
+                                 <h1 style="text-align: center; font-size: 40pt; margin-bottom: 33px; letter-spacing: 3px; position: relative; z-index: 999;">Peer {{Name}} Status </h1>
+                                 <div class="blockchain-step immutability fifty-attack">
+                                    <div class = "center">
+                                      <tr *ngFor="let dataItem of PeerDataList;let i = index">
+                                       <div class="ant-card genesis block block-shadow ant-card-bordered">
+                                        
+                                         
+                                      
+                                          <div class="ant-card-body">
+                                           
+                                             <div>
+                                                <span class="ant-input-group-wrapper" style="margin-bottom: 20px;"><span class="ant-input-wrapper ant-input-group"><span class="ant-input-group-addon"><span style="margin-right: 7px; margin-left: 7px;">DATA</span></span><span class="genesis-data genesis-mutate genesis-mutate-2 ant-input-affix-wrapper"><span class="ant-input-prefix"><i class="anticon anticon-file-text"></i></span><input type="text" class="ant-input"  [(ngModel)]="PeerDataList[i].Data" (input)="addsInput(i)" value= "{{PeerDataList[i].Data}}" ></span></span></span>
+                                                <div class="genesis-previous-hash" style="margin-bottom: 7px; display: flex; justify-content: flex-start; flex-wrap: nowrap; max-width: 100%; overflow: auto;">
+                                                   <div style="white-space: nowrap;">PREVIOUS HASH</div>
+                                                   <div *ngIf="i == 0">
+                                                   <div data-show="true" class="ant-tag ant-tag-green" style="font-size: 8pt; float: right; font-family: &quot;Courier New&quot;; cursor: default; display: block; background: none; border-color: transparent;"><span class="ant-tag-text">0</span></div>
+                                                    </div>
+                                                    <div *ngIf="i != 0">
+                                                      <div *ngIf="PeerDataList[i-1].UpdatedTxHash== PeerDataList[i-1].TxHash">
+                                                   <div data-show="true" class="ant-tag ant-tag-green" style="font-size: 8pt; float: right; font-family: &quot;Courier New&quot;; cursor: default; display: block; background: none; border-color: transparent;"><span class="ant-tag-text">{{PeerDataList[i-1].UpdatedTxHash }}</span></div>
+                                                         </div>
+                                                         <div *ngIf="PeerDataList[i-1].UpdatedTxHash!= PeerDataList[i-1].TxHash">
+                                                            <div data-show="true" class="ant-tag ant-tag-red" style="font-size: 8pt; float: right; font-family: &quot;Courier New&quot;; cursor: default; display: block; background: none; border-color: transparent;"><span class="ant-tag-text">{{PeerDataList[i-1].UpdatedTxHash }}</span></div>
+                                                                  </div>
 
-(click)="addClick() "  disabled
->
-    Add Data
-  </button>
-</div>
-  <div *ngIf="Data !=''">
-    <button type="button" class="btn btn-primary float-right ml-3" 
-
-(click)="addClick()"
->
-Add Data
-</button>
-</div>
-          </td>
-        
-
-    </tbody>
-</table>
-
-
+                                                   </div>
+                                                </div>
+                                                <div class="genesis-hash genesis-hash-2 genesis-hash-3" style="display: flex; justify-content: flex-start; flex-wrap: nowrap; max-width: 100%; overflow: auto;">
+                                                   <div style="margin-right: 15px;">HASH</div>
+                                                   <div *ngIf="dataItem.UpdatedTxHash == dataItem.TxHash">
+                                                   <div data-show="true" class="ant-tag ant-tag-green" style="display: block; font-size: 9pt; font-family: &quot;Courier New&quot;; cursor: default; max-width: 100%; overflow: auto;"><span class="ant-tag-text">{{dataItem.UpdatedTxHash}}</span></div>
+                                                   </div>
+                                                   <div *ngIf="dataItem.UpdatedTxHash != dataItem.TxHash">
+                                                      <div data-show="true" class="ant-tag ant-tag-red" style="display: block; font-size: 9pt; font-family: &quot;Courier New&quot;; cursor: default; max-width: 100%; overflow: auto;"><span class="ant-tag-text">{{dataItem.UpdatedTxHash}}</span></div>
+                                                      </div>
+                                                </div>
+                                                <div *ngIf="i ==  0">
+                                                <div style="margin-top: 27px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; text-overflow: ellipsis;">
+                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;">GENESIS BLOCK</span> </div>
+                                                   
+                                                </div>
+                                               </div>
+                                               <div *ngIf="i !=  0">
+                                                <div style="margin-top: 27px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; text-overflow: ellipsis;">
+                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;"> BLOCK #{{i}}</span> </div>
+                                                   
+                                                </div>
+                                                </div>
+                                             </div>
+                                        
+                                          </div>
+                                          <td>
+                                             <button type="button" class="btn btn-light mr-1"
+                                           
+                             (click)="editClick(i)"
+                             data-backdrop="static" data-keyboard="false"
+                                             >
+                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench" viewBox="0 0 16 16">
+                                               <path d="M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.252A3.003 3.003 0 0 0 13 16a3 3 0 1 0-.851-5.878L5.897 3.781A3.004 3.004 0 0 0 2.223.1l2.141 2.142L4 4l-1.757.364L.102 2.223zm13.37 9.019l.528.026.287.445.445.287.026.529L15 13l-.242.471-.026.529-.445.287-.287.445-.529.026L13 15l-.471-.242-.529-.026-.287-.445-.445-.287-.026-.529L11 13l.242-.471.026-.529.445-.287.287-.445.529-.026L13 11l.471.242z"/>
+                                             </svg>
+                                             </button>
+                                         </td>
+                                        
+                                       </div>
+                                       </tr>
+                                    </div>
+                                    
+                                 </div>
+                              </div>
+                              <div class="ant-card mine is-valid mine-shadow ant-card-bordered">
+                                 <div class="ant-card-body">
+                                    <div>
+                                    <div class="items">
+                                           <span class="ant-input-group-wrapper" style="margin-top: 15px; padding-left: 10px; padding-right: 10px; z-index: 100;">
+                                            <span class="ant-input-wrapper ant-input-group">
+                                                <span class="ant-input-group-addon">
+                                                    <span style="margin-right: 7px; margin-left: 7px;">DATA</span>
+                                                </span>
+                                                <span class="ant-input-affix-wrapper">
+                                                    <span class="ant-input-prefix">
+                                            
+                                                    </span>
+                                                    <input type="text" placeholder="Add data" [(ngModel)]="Data" class="ant-input">
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <div *ngIf="Data ==''">
+                                          <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addClick()" disabled><span>ADD NEW BLOCK</span></button>
+                                         
+                                          
+                                       </div>
+                                       <div *ngIf="Data !=''">
+                                       
+                                          <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addClick()"><span>ADD NEW BLOCK</span></button>
+                                    
+                                      </div>
+                                    </div>
+                                </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+         </div>
+      </div>
+      <script type="text/javascript" src="/static/js/main.acfbede2.js"></script>
+   </body>
+</html>

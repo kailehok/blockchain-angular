@@ -19,7 +19,7 @@ export class ShowBlockComponent implements OnInit {
   PeerDataList:any=[];
   PeerList:any=[];
   PeerId: any=[];
-  Name: string = "kai";
+  Name: string;
   Data: string = "";
   Peer: string;
   Color: string = "blue"
@@ -56,7 +56,8 @@ clickPeer(name,index) {
   ngOnInit(): void {
     this.refreshEmpList();
     this.refreshEmpPeerList();
-    console.log(this.Data)
+    console.log(this.Data);
+   
    
     
   }
@@ -70,10 +71,12 @@ clickPeer(name,index) {
     peerData.Peer = this.Name; 
     peerData.Data = this.Data; 
     var TxHash = this.hashCode(this.PeerDataList[leng-1]["TxHash"],this.Data)
+   
     peerData.TxHash = TxHash;
 
     peerData.UpdatedTxHash= TxHash; 
     peerData.Deleted = false;
+    console.log(peerData);
     this.PeerDataList.push(peerData);
 
    
@@ -104,8 +107,13 @@ this.Data = '';
 
 
     for (var i = index; i < this.leng; i++) {
+      if (i==0){
+        this.PeerDataList[i]["UpdatedTxHash"] = this.hashCode("GENESIS BLOCK", this.PeerDataList[i]["Data"]);
+      }
+      else{
+
       this.PeerDataList[i]["UpdatedTxHash"] = this.hashCode(this.PeerDataList[i-1]["UpatedTxHash"], this.PeerDataList[i]["Data"]);
-      
+      }
     }
  
   }
@@ -116,8 +124,15 @@ this.Data = '';
    
 
     if(this.PeerDataList[index]["UpdatedTxHash"] !== this.PeerDataList[index]["TxHash"])
-    {
-        var TxHash = this.hashCode(this.PeerDataList[index-1]["UpdatedTxHash"],this.PeerDataList[index-1]["Data"]);
+    {  if (index==0){
+      var TxHash = this.hashCode("GENESIS BLOCK UPDATED", this.PeerDataList[index]["Data"]);
+          }
+        else{
+
+
+       
+        var TxHash = this.hashCode(this.PeerDataList[index-1]["UpdatedTxHash"],this.PeerDataList[index]["Data"]);
+        }
         this.PeerDataList[index]["TxHash"] = TxHash;
         this.PeerDataList[index]["UpdatedTxHash"] = TxHash;
         this.leng = this.PeerDataList.length;
@@ -179,9 +194,21 @@ this.Data = '';
     }
  
         // Convert to 8 digit hex string
-        return random1+("0000000" + (hval >>> 0).toString(16)).substr(-8)+(hval >>> 0).toString(16)+random;
+        return "000000x"+("0000000" + (hval >>> 0).toString(16)).substr(-8)+(hval >>> 0).toString(16)+random + this.generateString(80);
     
    
+}
+
+
+ generateString(length) {
+  const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
 }
 
 deletePeer(name){
@@ -194,7 +221,7 @@ deletePeer(name){
 
  
 
-  if(confirm('Are you sure??')){
+  if(confirm('Are you sure you want to delete Peer ' +name+'?')){
     this.service.deletePeer(name).subscribe(data=>{
       alert(data.toString());
       this.refreshEmpPeerList();
@@ -229,8 +256,8 @@ deletePeer(name){
     peerData.Id = 1; 
     peerData.Peer = this.Peer; 
     peerData.Data = "Welcome to Blockchain"; 
-    peerData.TxHash = "93178ae532578ae532575547"; 
-    peerData.UpdatedTxHash= "93178ae532578ae532575547"; 
+    peerData.TxHash = this.hashCode("GENESIS BLOCK", peerData.Data);
+    peerData.UpdatedTxHash= peerData.TxHash; 
     peerData.Deleted = false;
 
     var leng = this.PeerList.length;
@@ -238,21 +265,23 @@ deletePeer(name){
    for (var i = 0; i < leng; i++) {
      if ( this.PeerList[i]["PeerName"]==this.Peer){
        alert("Peer already exists!")
-      this.duplicate = true;
+      return
      }
     }
-    if(!this.duplicate){
+  
 
       this.service.addPeer(val).subscribe(res=>{
         // alert(res.toString());
       });
+      this.refreshEmpPeerList();
     this.service.addPeerData(peerData).subscribe(res=>{
       // alert(res.toString());
     });
-    this.refreshEmpPeerList();
-  }
-  this.duplicate = false;
     
+   
+  
+  
+ 
   }
 
   changePeer(name,index) {
@@ -270,7 +299,7 @@ deletePeer(name){
     peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
     peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
     peerData.Deleted = false;
-    console.log(peerData)
+    console.log("hello",peerData)
     this.service.updatePeerData(peerData).subscribe(res=>{
       
     });

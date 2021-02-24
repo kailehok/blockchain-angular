@@ -41,7 +41,7 @@ def peerApi(request,id=0,name=0):
     elif request.method=='DELETE':
         peer=Peers.objects.get(PeerName=id)
         peer.delete()
-        return JsonResponse("Deleted Succeffully!!", safe=False)
+        return JsonResponse("Deleted Successfully!!", safe=False)
 
 @csrf_exempt
 def peerDataApi(request,id=0):

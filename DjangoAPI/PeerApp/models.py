@@ -11,6 +11,6 @@ class PeerDatas(models.Model):
     Id = models.IntegerField()
     Peer = models.CharField(max_length=100)
     Data = models.CharField(max_length=100)
-    TxHash = models.CharField(max_length=100)
-    UpdatedTxHash = models.CharField(max_length=100)
+    TxHash = models.CharField(max_length=1000)
+    UpdatedTxHash = models.CharField(max_length=1000)
     Deleted = models.BooleanField()
