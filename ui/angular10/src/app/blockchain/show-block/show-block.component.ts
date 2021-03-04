@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SharedService} from 'src/app/shared.service';
 import {md5} from 'md5';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ElementFinder } from 'protractor';
 declare var foo: Function;
 declare var stringToHash: Function;
 
@@ -17,6 +18,8 @@ export class ShowBlockComponent implements OnInit {
    }
 
   PeerDataList:any=[];
+  AdminList:any=[];
+  
   PeerList:any=[];
   PeerId: any=[];
   Name: string;
@@ -24,6 +27,7 @@ export class ShowBlockComponent implements OnInit {
   Peer: string;
   Color: string = "blue"
   duplicate: boolean = false;
+  Admin = "admin";
 
   ModalTitle:string;
   ActivateAddEditEmpComp:boolean=false;
@@ -56,14 +60,14 @@ clickPeer(name,index) {
   ngOnInit(): void {
     this.refreshEmpList();
     this.refreshEmpPeerList();
-    console.log(this.Data);
+    // console.log(this.Data);
    
    
     
   }
 
   addClick(){
-    console.log(this.Data);
+    // console.log(this.Data);
     var leng = this.PeerDataList.length;
     let peerData = new PeerData();
     peerData.PeerDataId = this.Name + (leng+1).toString() + this.Name ;
@@ -76,7 +80,7 @@ clickPeer(name,index) {
 
     peerData.UpdatedTxHash= TxHash; 
     peerData.Deleted = false;
-    console.log(peerData);
+    // console.log(peerData);
     this.PeerDataList.push(peerData);
 
    
@@ -119,8 +123,8 @@ this.Data = '';
   }
 
   editClick(index){
-    console.log(this.PeerDataList[index]["UpdatedTxHash"]);
-    console.log(this.PeerDataList[index]["TxHash"]);
+    // console.log(this.PeerDataList[index]["UpdatedTxHash"]);
+    // console.log(this.PeerDataList[index]["TxHash"]);
    
 
     if(this.PeerDataList[index]["UpdatedTxHash"] !== this.PeerDataList[index]["TxHash"])
@@ -164,7 +168,16 @@ this.Data = '';
  
     this.service.getPeerDataList(this.Name).subscribe(data=>{
       this.PeerDataList=data;
-      console.log(this.PeerDataList)
+      // console.log(this.PeerDataList)
+    });
+  
+  }
+
+  refreshAdminList(){
+ 
+    this.service.getPeerDataList(this.Admin).subscribe(data=>{
+      this.AdminList=data;
+      console.log(this.AdminList)
     });
   
   }
@@ -216,7 +229,7 @@ deletePeer(name){
  
 
   var leng = this.PeerId.length;
-    console.log(this)
+    // console.log(this)
 
 
  
@@ -284,34 +297,124 @@ deletePeer(name){
  
   }
 
+  checkStatus(){
+    var leng = this.PeerDataList.length;
+    for (var i = 0; i < leng; i++){
+      if(this.PeerDataList[i]["TxHash"] != this.PeerDataList[i]["UpdatedTxHash"]){
+        return "RED";
+      }
+    }
+    return "GREEN"
+
+  }
+
   changePeer(name,index) {
 
     let peerData = new PeerData();
     
 
     var leng = this.PeerDataList.length;
+    var aleng = this.AdminList.length;
+    console.log(this.PeerDataList,"peer")
+    console.log(this.AdminList,"admin")
   
-   for (var i = 0; i < leng; i++) {
-    peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() + this.PeerDataList[i]["Peer"] ;
-    peerData.Id = i+1;
-    peerData.Peer = this.PeerDataList[i]["Peer"]; 
-    peerData.Data = this.PeerDataList[i]["Data"]; 
-    peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
-    peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
-    peerData.Deleted = false;
     console.log("hello",peerData)
-    this.service.updatePeerData(peerData).subscribe(res=>{
-      
-    });
+    console.log(aleng,leng)
+
+
+    for (var i = 0; i < leng; i++) {
+      peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() + this.PeerDataList[i]["Peer"] ;
+      peerData.Id = i+1;
+      peerData.Peer = this.PeerDataList[i]["Peer"]; 
+      peerData.Data = this.PeerDataList[i]["Data"]; 
+      peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
+      peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
+      peerData.Deleted = false;
+      // console.log("hello",peerData)
+      this.service.updatePeerData(peerData).subscribe(res=>{
+        
+      });
+      }
+
+    if (this.checkStatus() == "GREEN"){
+        if(leng>aleng){
+
+          for (var i = 0; i < aleng; i++) {
+            peerData.PeerDataId = this.Admin+ (i+1).toString() + this.Admin ;
+            peerData.Id = i+1;
+            peerData.Peer = this.Admin; 
+            peerData.Data = this.PeerDataList[i]["Data"]; 
+            peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
+            peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
+            peerData.Deleted = false;
+            // console.log("hello",peerData)
+            this.service.updatePeerData(peerData).subscribe(res=>{
+              
+            });
+            }
+            console.log("extra",peerData)
+            
+
+            for ( i = aleng ; i < leng; i++) {
+              peerData.PeerDataId = this.Admin+ (i+1).toString() + this.Admin ;
+              peerData.Id = i+1;
+              peerData.Peer = this.Admin; 
+              peerData.Data = this.PeerDataList[i]["Data"]; 
+              peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
+              peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
+              peerData.Deleted = false;
+              console.log("extra",peerData)
+              this.service.addPeerData(peerData).subscribe(res=>{
+                
+              });
+              }
+
+        }
+        else if(aleng>=leng){
+          for (var i = 0; i < leng; i++) {
+            peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() +this.PeerDataList[i]["Peer"] ;
+            peerData.Id = i+1;
+            peerData.Peer = this.PeerDataList[i]["Peer"]; 
+            peerData.Data = this.AdminList[i]["Data"]; 
+            peerData.TxHash = this.AdminList[i]["TxHash"]; 
+            peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+            peerData.Deleted = false;
+            // console.log("hello",peerData)
+            this.service.updatePeerData(peerData).subscribe(res=>{
+              
+            });
+            }
+
+            for ( i = leng; i < aleng; i++) {
+              peerData.PeerDataId = this.PeerDataList[0]["Peer"] + (i+1).toString() + this.PeerDataList[0]["Peer"] ;
+              peerData.Id = i+1;
+              peerData.Peer = this.PeerDataList[0]["Peer"]; 
+              peerData.Data = this.AdminList[i]["Data"]; 
+              peerData.TxHash = this.AdminList[i]["TxHash"]; 
+              peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+              peerData.Deleted = false;
+              // console.log("hello",peerData)
+              this.service.addPeerData(peerData).subscribe(res=>{
+                
+              });
+              }
+
+
+        }
     }
+    
+
+    
+
+    
 
 
 
    this.Name = name;
-   console.log(name);
+   // console.log(name);
    this.refreshEmpList();
    var leng = this.PeerList.length;
-   console.log(leng)
+   // console.log(leng)
    for (var i = 0; i < leng; i++) {
      if (i == index){
       this.PeerList[i]["Color"]="red";
@@ -320,8 +423,9 @@ deletePeer(name){
       this.PeerList[i]["Color"]="blue";
 
      }
+     this.refreshAdminList();
 
-     console.log(this.PeerList)
+     // console.log(this.PeerList)
 
      
    
