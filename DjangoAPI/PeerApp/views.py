@@ -48,7 +48,9 @@ def peerDataApi(request,id=0):
     if request.method=='GET':
         # peerDatas = PeerDatas.objects.all()
         peerDatas = PeerDatas.objects.filter(PeerDataId__endswith = id,PeerDataId__startswith = id)
-        peerDatas_serializer = PeerDataSerializer(peerDatas, many=True)
+        peerData = peerDatas.order_by('Id')
+
+        peerDatas_serializer = PeerDataSerializer(peerData, many=True)
         return JsonResponse(peerDatas_serializer.data, safe=False)
 
     elif request.method=='POST':
