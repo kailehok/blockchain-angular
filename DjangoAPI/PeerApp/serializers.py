@@ -15,4 +15,5 @@ class PeerDataSerializer(serializers.ModelSerializer):
                   'Data',
                   'TxHash',
                   'UpdatedTxHash',
-                  'Deleted')
+                  'Deleted',
+                  'Date')

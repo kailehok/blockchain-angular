@@ -14,3 +14,4 @@ class PeerDatas(models.Model):
     TxHash = models.CharField(max_length=1000)
     UpdatedTxHash = models.CharField(max_length=1000)
     Deleted = models.BooleanField()
+    Date = models.CharField(max_length=1000)

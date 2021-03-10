@@ -102,13 +102,19 @@
                                                 </div>
                                                 <div *ngIf="i ==  0">
                                                 <div style="margin-top: 27px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; text-overflow: ellipsis;">
-                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;">GENESIS BLOCK</span> </div>
+                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;">GENESIS BLOCK</span> 
+                                                      <span class="genesis-timestamp"><span style="font-weight: 300; font-size: 14pt;">on {{dataItem.Date}} </span></span>
+                                                   </div>
+                                                   <div data-show="true" class="ant-tag genesis-mine genesis-nonce" style="cursor: default;"><span class="ant-tag-text">{{dataItem.UpdatedTxHash.substr(22,3)}}</span></div>
                                                    
                                                 </div>
                                                </div>
                                                <div *ngIf="i !=  0">
                                                 <div style="margin-top: 27px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; text-overflow: ellipsis;">
-                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;"> BLOCK #{{i}}</span> </div>
+                                                   <div style="font-size: 24px; white-space: nowrap; overflow: auto;"><span class="genesis-index" style="letter-spacing: 1px;"> BLOCK #{{i}}</span>
+                                                      <span class="genesis-timestamp"><span style="font-weight: 300; font-size: 14pt;">on {{dataItem.Date}} </span></span>
+                                                   </div>
+                                                   <div data-show="true" class="ant-tag genesis-mine genesis-nonce" style="cursor: default;"><span class="ant-tag-text">{{dataItem.UpdatedTxHash.substr(22,3)}}</span></div>
                                                    
                                                 </div>
                                                 </div>
