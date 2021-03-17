@@ -441,10 +441,20 @@ deletePeer(name){
         
       });
       }
-    
-  if (color == "GREEN"){
-        if(leng>aleng){
 
+      this.sortList();
+      var admin = true;
+      if(leng>aleng){
+        for (var i = 0; i < aleng; i++){
+        if (this.PeerDataList[i]["TxHash"] != this.AdminList[i]["TxHash"]){
+          admin = false;
+          break;
+
+
+        }
+      } 
+    
+  if (color == "GREEN" &&  admin ){
           for (var i = 0; i < aleng; i++) {
             peerData.PeerDataId = this.Admin+ (i+1).toString() + this.Admin ;
             peerData.Id = i+1;
