@@ -340,8 +340,72 @@ deletePeer(name){
      
 
     }
-    console.log(this.PeerDataList,"final")
+    console.log(this.PeerDataList,"finalP")
+
+    for(let i=0; i< (this.AdminList.length);i++){
+
+      if(i+1 == this.AdminList[i]['Id']){
+        continue;
+      }
+      else{
+        var index = this.AdminList[i]['Id'];
+        var value = this.AdminList[i];
+        this.AdminList[i] = this.AdminList[index-1]
+        this.AdminList[index-1] = value
+      }
+     
+
+    }
+    console.log(this.AdminList,"finalA")
  
+  }
+
+  reMine(){
+    let peerData = new PeerData();
+    var leng = this.PeerDataList.length;
+    var aleng = this.AdminList.length;
+    this.sortList();
+    for (var i = 0; i < leng; i++) {
+
+                if (i>= aleng){
+                  var id = this.PeerDataList[i]["Peer"]+ (i+1).toString() +this.PeerDataList[i]["Peer"]
+                  this.service.deletePeerData(id).subscribe(res=>{
+                  
+                  });
+                  continue;
+
+                }
+                peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() +this.PeerDataList[i]["Peer"] ;
+                peerData.Id = i+1;
+                peerData.Peer = this.PeerDataList[i]["Peer"]; 
+                peerData.Data = this.AdminList[i]["Data"]; 
+                peerData.TxHash = this.AdminList[i]["TxHash"]; 
+                peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+                peerData.Deleted = false;
+                peerData.Date= this.AdminList[i]["Date"]; 
+                // console.log("hello",peerData)
+                this.service.updatePeerData(peerData).subscribe(res=>{
+                  
+                });
+                }
+    
+                for ( i = leng; i < aleng; i++) {
+                  peerData.PeerDataId = this.PeerDataList[0]["Peer"] + (i+1).toString() + this.PeerDataList[0]["Peer"] ;
+                  peerData.Id = i+1;
+                  peerData.Peer = this.PeerDataList[0]["Peer"]; 
+                  peerData.Data = this.AdminList[i]["Data"]; 
+                  peerData.TxHash = this.AdminList[i]["TxHash"]; 
+                  peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+                  peerData.Deleted = false;
+                  peerData.Date= this.AdminList[i]["Date"]; 
+                  // console.log("hello",peerData)
+                  this.service.addPeerData(peerData).subscribe(res=>{
+                    
+                  });
+                  }
+
+                  this.refreshEmpList();
+
   }
 
   changePeer(name,index) {
@@ -362,7 +426,7 @@ deletePeer(name){
     var color = this.checkStatus()
 
 
-    if(color == "RED"){
+
     for (var i = 0; i < leng; i++) {
       peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() + this.PeerDataList[i]["Peer"] ;
       peerData.Id = i+1;
@@ -377,8 +441,8 @@ deletePeer(name){
         
       });
       }
-    }
-    else if (color == "GREEN"){
+    
+  if (color == "GREEN"){
         if(leng>aleng){
 
           for (var i = 0; i < aleng; i++) {
@@ -413,57 +477,59 @@ deletePeer(name){
                 
               });
               }
+        }
+      }
 
-              for (var i = 0; i < leng; i++) {
-                peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() + this.PeerDataList[i]["Peer"] ;
-                peerData.Id = i+1;
-                peerData.Peer = this.PeerDataList[i]["Peer"]; 
-                peerData.Data = this.PeerDataList[i]["Data"]; 
-                peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
-                peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
-                peerData.Deleted = false;
-                peerData.Date= this.PeerDataList[i]["Date"]; 
-                // console.log("hello",peerData)
-                this.service.updatePeerData(peerData).subscribe(res=>{
+  //             for (var i = 0; i < leng; i++) {
+  //               peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() + this.PeerDataList[i]["Peer"] ;
+  //               peerData.Id = i+1;
+  //               peerData.Peer = this.PeerDataList[i]["Peer"]; 
+  //               peerData.Data = this.PeerDataList[i]["Data"]; 
+  //               peerData.TxHash = this.PeerDataList[i]["TxHash"]; 
+  //               peerData.UpdatedTxHash= this.PeerDataList[i]["UpdatedTxHash"]; 
+  //               peerData.Deleted = false;
+  //               peerData.Date= this.PeerDataList[i]["Date"]; 
+  //               // console.log("hello",peerData)
+  //               this.service.updatePeerData(peerData).subscribe(res=>{
                   
-                });
-                }
+  //               });
+  //               }
 
-        }
-        else if(aleng>leng){
-          for (var i = 0; i < leng; i++) {
-            peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() +this.PeerDataList[i]["Peer"] ;
-            peerData.Id = i+1;
-            peerData.Peer = this.PeerDataList[i]["Peer"]; 
-            peerData.Data = this.AdminList[i]["Data"]; 
-            peerData.TxHash = this.AdminList[i]["TxHash"]; 
-            peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
-            peerData.Deleted = false;
-            peerData.Date= this.AdminList[i]["Date"]; 
-            // console.log("hello",peerData)
-            this.service.updatePeerData(peerData).subscribe(res=>{
+  //       }
+  //       else if(aleng>leng){
+  //         for (var i = 0; i < leng; i++) {
+  //           peerData.PeerDataId = this.PeerDataList[i]["Peer"]+ (i+1).toString() +this.PeerDataList[i]["Peer"] ;
+  //           peerData.Id = i+1;
+  //           peerData.Peer = this.PeerDataList[i]["Peer"]; 
+  //           peerData.Data = this.AdminList[i]["Data"]; 
+  //           peerData.TxHash = this.AdminList[i]["TxHash"]; 
+  //           peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+  //           peerData.Deleted = false;
+  //           peerData.Date= this.AdminList[i]["Date"]; 
+  //           // console.log("hello",peerData)
+  //           this.service.updatePeerData(peerData).subscribe(res=>{
               
-            });
-            }
+  //           });
+  //           }
 
-            for ( i = leng; i < aleng; i++) {
-              peerData.PeerDataId = this.PeerDataList[0]["Peer"] + (i+1).toString() + this.PeerDataList[0]["Peer"] ;
-              peerData.Id = i+1;
-              peerData.Peer = this.PeerDataList[0]["Peer"]; 
-              peerData.Data = this.AdminList[i]["Data"]; 
-              peerData.TxHash = this.AdminList[i]["TxHash"]; 
-              peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
-              peerData.Deleted = false;
-              peerData.Date= this.AdminList[i]["Date"]; 
-              // console.log("hello",peerData)
-              this.service.addPeerData(peerData).subscribe(res=>{
+  //           for ( i = leng; i < aleng; i++) {
+  //             peerData.PeerDataId = this.PeerDataList[0]["Peer"] + (i+1).toString() + this.PeerDataList[0]["Peer"] ;
+  //             peerData.Id = i+1;
+  //             peerData.Peer = this.PeerDataList[0]["Peer"]; 
+  //             peerData.Data = this.AdminList[i]["Data"]; 
+  //             peerData.TxHash = this.AdminList[i]["TxHash"]; 
+  //             peerData.UpdatedTxHash= this.AdminList[i]["UpdatedTxHash"]; 
+  //             peerData.Deleted = false;
+  //             peerData.Date= this.AdminList[i]["Date"]; 
+  //             // console.log("hello",peerData)
+  //             this.service.addPeerData(peerData).subscribe(res=>{
                 
-              });
-              }
+  //             });
+  //             }
 
 
-        }
-    }
+  //       }
+  //   }
     
 
     
@@ -494,7 +560,7 @@ deletePeer(name){
    
    
   };
-  this.sortList();
+  // this.sortList();
 }
 }
 
