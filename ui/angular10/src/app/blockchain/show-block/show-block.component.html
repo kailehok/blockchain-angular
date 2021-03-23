@@ -46,7 +46,8 @@
                         
                         <div class="ant-tabs-extra-content" style="float: right;">
                            
-                           <input type="text"style="float: right;font-size: 15pt; font-weight: 500;"class="ant-input"  [(ngModel)]="Peer" >
+                           <input type="text"style="float: right;font-size: 15pt; font-weight: 500;"class="ant-input"  [(ngModel)]="Peer" >\
+                           <!-- Adds a new peer by calling addPeer() -->
                            <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addPeer()"><span>Add Peer</span></button>
                      </div>
                      <div class="ant-tabs-nav-container">
@@ -64,9 +65,11 @@
                         <div>
                            <div style="width: 100%;">
                               <div class="valid-chain replace-chain">
+                                <!-- Displays the name of current activated Peer -->
                                  <h1 style="text-align: center; font-size: 40pt; margin-bottom: 33px; letter-spacing: 3px; position: relative; z-index: 999;">Peer {{Name}} Status </h1>
                                  <div class="blockchain-step immutability fifty-attack">
                                     <div class = "center">
+                                      <!-- Gets the node blocks for the activated peers and loops through it to display in the frontend -->
                                       <tr *ngFor="let dataItem of PeerDataList;let i = index">
                                        <div class="ant-card genesis block block-shadow ant-card-bordered">
                                         
@@ -121,8 +124,10 @@
                                              </div>
                                         
                                           </div>
+                                           <!-- Edit click changes the red block to green block -->
                                           <td>
                                              <button type="button" class="btn btn-light mr-1"
+                                            
                                            
                              (click)="editClick(i)"
                              data-backdrop="static" data-keyboard="false"
@@ -157,12 +162,13 @@
                                             </span>
                                         </span>
                                         <div *ngIf="Data ==''">
+                                          <!-- Displays when no Data is not inputed -->
                                           <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addClick()" disabled><span>ADD NEW BLOCK</span></button>
                                          
                                           
                                        </div>
                                        <div *ngIf="Data !=''">
-                                       
+                                        <!-- Displays when Data is inputed -->
                                           <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="addClick()"><span>ADD NEW BLOCK</span></button>
                                     
                                       </div>
@@ -171,6 +177,7 @@
                                     </div>
                                 </div>
                                  </div>
+                                 <!-- reMine() mines the data to be in sync  -->
                                  <button type="button" class="ant-btn ant-btn-primary" style="float: right;font-size: 15pt; font-weight: 500;"(click)="reMine()"><span>RE-MINE</span></button>
                               </div>
                            </div>

@@ -1,11 +1,15 @@
 from django.db import models
 
 # Create your models here.
+
+# Attributes for Peers 
 class Peers(models.Model):
 
     PeerName = models.CharField(primary_key=True,max_length=100)
     Color = models.CharField(max_length=100)
 
+
+# Attributes for PeerDatas
 class PeerDatas(models.Model):
     PeerDataId = models.CharField(primary_key=True, max_length=100)
     Id = models.IntegerField()

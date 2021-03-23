@@ -4,6 +4,8 @@ from PeerApp import views
 from django.conf.urls.static import static
 from django.conf import settings
 
+
+# Configuring urlpatterns to hit the views in views.py accordingly
 urlpatterns=[
 
     url(r'^peer/$',views.peerApi),
